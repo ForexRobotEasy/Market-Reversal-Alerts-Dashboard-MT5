@@ -1,0 +1,134 @@
+
+//+------------------------------------------------------------------+
+//|                                         Market Reversal Alerts Dashboard MT5                                          |
+//|                                                forexroboteasy.com                                                |
+//|                                                     Forex Robot Easy Team                                                     |
+//+------------------------------------------------------------------+
+
+// Define input parameters
+input bool EnableM5 = true;   // Enable M5 timeframe alerts
+input bool EnableM15 = true;  // Enable M15 timeframe alerts
+input bool EnableM30 = true;  // Enable M30 timeframe alerts
+input bool EnableH1 = true;   // Enable H1 timeframe alerts
+input bool EnableH4 = true;   // Enable H4 timeframe alerts
+input bool EnableD1 = true;   // Enable D1 timeframe alerts
+
+//+------------------------------------------------------------------+
+//| Custom Indicator Buffer Definitions                              |
+//+------------------------------------------------------------------+
+
+// Define buffer index for each timeframe
+int bufferM5;
+int bufferM15;
+int bufferM30;
+int bufferH1;
+int bufferH4;
+int bufferD1;
+
+//+------------------------------------------------------------------+
+//| Custom Indicator Initialization                                  |
+//+------------------------------------------------------------------+
+
+int OnInit()
+{
+    // Attach custom indicator to the chart
+    IndicatorSetString(INDICATOR_SHORTNAME, 'Market Structure Reversal Indicator');
+    int indicatorHandle = iCustom(NULL, 0, 'MarketStructureReversalIndicator');
+
+    // Retrieve buffer indices from the custom indicator
+    bufferM5 = iCustom(NULL, 0, 'MarketStructureReversalIndicator', 'M5');
+    bufferM15 = iCustom(NULL, 0, 'MarketStructureReversalIndicator', 'M15');
+    bufferM30 = iCustom(NULL, 0, 'MarketStructureReversalIndicator', 'M30');
+    bufferH1 = iCustom(NULL, 0, 'MarketStructureReversalIndicator', 'H1');
+    bufferH4 = iCustom(NULL, 0, 'MarketStructureReversalIndicator', 'H4');
+    bufferD1 = iCustom(NULL, 0, 'MarketStructureReversalIndicator', 'D1');
+
+    return (indicatorHandle != INVALID_HANDLE);
+}
+
+//+------------------------------------------------------------------+
+//| Custom Indicator Alerts                                          |
+//+------------------------------------------------------------------+
+
+void CheckAlerts()
+{
+    // Check M5 alerts
+    if (EnableM5)
+    {
+        double m5Alert = iCustom(NULL, 0, 'MarketStructureReversalIndicator', 'Alert', bufferM5);
+        if (m5Alert != 0)
+        {
+            Alert('M5 reversal alert! Pattern: ', m5Alert);
+        }
+    }
+
+    // Check M15 alerts
+    if (EnableM15)
+    {
+        double m15Alert = iCustom(NULL, 0, 'MarketStructureReversalIndicator', 'Alert', bufferM15);
+        if (m15Alert != 0)
+        {
+            Alert('M15 reversal alert! Pattern: ', m15Alert);
+        }
+    }
+
+    // Check M30 alerts
+    if (EnableM30)
+    {
+        double m30Alert = iCustom(NULL, 0, 'MarketStructureReversalIndicator', 'Alert', bufferM30);
+        if (m30Alert != 0)
+        {
+            Alert('M30 reversal alert! Pattern: ', m30Alert);
+        }
+    }
+
+    // Check H1 alerts
+    if (EnableH1)
+    {
+        double h1Alert = iCustom(NULL, 0, 'MarketStructureReversalIndicator', 'Alert', bufferH1);
+        if (h1Alert != 0)
+        {
+            Alert('H1 reversal alert! Pattern: ', h1Alert);
+        }
+    }
+
+    // Check H4 alerts
+    if (EnableH4)
+    {
+        double h4Alert = iCustom(NULL, 0, 'MarketStructureReversalIndicator', 'Alert', bufferH4);
+        if (h4Alert != 0)
+        {
+            Alert('H4 reversal alert! Pattern: ', h4Alert);
+        }
+    }
+
+    // Check D1 alerts
+    if (EnableD1)
+    {
+        double d1Alert = iCustom(NULL, 0, 'MarketStructureReversalIndicator', 'Alert', bufferD1);
+        if (d1Alert != 0)
+        {
+            Alert('D1 reversal alert! Pattern: ', d1Alert);
+        }
+    }
+}
+
+//+------------------------------------------------------------------+
+//| Custom Indicator Deinitialization                                |
+//+------------------------------------------------------------------+
+
+void OnDeinit(const int reason)
+{
+    // Remove custom indicator from the chart
+    ObjectsDeleteAll();
+}
+
+//+------------------------------------------------------------------+
+//| Expert Advisor Start Function                                     |
+//+------------------------------------------------------------------+
+
+void OnTick()
+{
+    // Check for reversal alerts
+    CheckAlerts();
+}
